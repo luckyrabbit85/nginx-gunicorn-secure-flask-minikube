@@ -13,7 +13,7 @@ logger = setup_app_logger(__name__)
 @app.route("/", methods=["GET"])
 def check_app():
     """Handles requests to check the status of the application."""
-    app.logger.info("Status: 200")
+    logger.info("Status: 200")
     return jsonify({"status": "application is running"}), 200
 
 
@@ -31,7 +31,7 @@ def predict_iris_type():
         iris_model = IrisModel()
         return iris_model.predict(request)
     except CustomException as e:
-        app.logger.error(f"CustomError: {str(e)}")
+        logger.error(f"CustomError: {str(e)}")
         return generate_error_response(e)
 
 
