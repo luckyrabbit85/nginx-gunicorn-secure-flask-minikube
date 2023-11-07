@@ -83,3 +83,29 @@ To personalize this project, follow these guidelines:
 
 ## Conclusion
 The project serves as a basic demonstration for constructing a secure web application stack with Docker, Nginx, Gunicorn, and Flask. It can be tailored to suit your specific requirements and serves as a foundational template for creating advanced and secure web applications. It's crucial to adhere to security best practices when deploying applications into a production environment.
+
+# Additional Information about the App
+
+This repository hosts a machine learning-based prediction model designed for classifying iris types based on the famous Iris dataset. The application allows users to input iris dimensions in the form of a JSON object and retrieves a prediction of the iris type through a similar JSON response.
+
+## Prediction Model Details
+
+The prediction model in this application is constructed using the iris dataset. It categorizes iris types based on input data formatted as:
+
+```json
+{
+    "iris_dimensions": [3.4, 5.6, 4.5, 1.3]
+}
+```
+Upon processing this input, the application responds with a JSON object indicating the classified iris type:
+
+```json
+{
+    "iris_type": "iris-versicolor" 
+}
+```
+## Error Handling and Responses
+The app is equipped with robust error handling mechanisms. In the event of errors, appropriate responses are provided to users. These responses aim to convey the issue encountered, ensuring clarity and guidance for users interacting with the application.
+
+## Logging and Slack Integration
+Furthermore, the application implements logging functionalities. All logs, including errors and critical events, are relayed to a designated Slack channel. This integration ensures prompt awareness and monitoring of system operations, facilitating efficient error resolution and system maintenance.
