@@ -31,8 +31,8 @@ def predict_iris_type():
         iris_model = IrisModel()
         return iris_model.predict(request)
     except CustomException as e:
-        logger.info(request.json)
-        logger.error(f"CustomError: {str(e)}")
+        logger.info(f"Input JSON: {request.json}")
+        logger.error(f"Output Error: {str(e)}")
         return generate_error_response(e)
 
 
