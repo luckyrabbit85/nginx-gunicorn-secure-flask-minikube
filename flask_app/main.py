@@ -1,13 +1,13 @@
 from flask import Flask, jsonify, request
 from utilities.iris_model import IrisModel
-from utilities.app_logger import setup_app_logger
+from utilities.app_logger import setup_gunicorn_logger_with_slack_handler
 from utilities.error_handler import CustomException, generate_error_response
 import warnings
 
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
-logger = setup_app_logger(__name__)
+logger = setup_gunicorn_logger_with_slack_handler(__name__)
 
 
 @app.route("/", methods=["GET"])
@@ -31,6 +31,7 @@ def predict_iris_type():
         iris_model = IrisModel()
         return iris_model.predict(request)
     except CustomException as e:
+        logger.info(request.json)
         logger.error(f"CustomError: {str(e)}")
         return generate_error_response(e)
 
