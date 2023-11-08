@@ -3,6 +3,7 @@ from utilities.iris_model import IrisModel
 from utilities.app_logger import setup_gunicorn_logger_with_slack_handler
 from utilities.error_handler import CustomException, generate_error_response
 import warnings
+import socket
 
 warnings.filterwarnings("ignore")
 
@@ -14,7 +15,8 @@ logger = setup_gunicorn_logger_with_slack_handler(__name__)
 def check_app():
     """Handles requests to check the status of the application."""
     logger.info("Status: 200")
-    return jsonify({"status": "application is running"}), 200
+    text = f"ML application is running in container ID:{socket.gethostname()}"
+    return jsonify({"status": text}), 200
 
 
 @app.route("/predict", methods=["POST"])
