@@ -1,7 +1,7 @@
-# Project ML-Deploy-Docker-Nginx-Gunicorn-Flask
+# Crafting a Secure Flask App: Deploying with Nginx and Gunicorn on Minikube for Maximum Protection
 ## Overview
 
-This project exemplifies the setup of a web application stack using Docker, Nginx, Gunicorn, and Flask, tailored for deploying a machine learning application. It offers a blueprint for deploying a Flask-based machine learning application served by a Gunicorn server. Additionally, it integrates an Nginx reverse proxy for efficient management of HTTP and HTTPS requests.
+This project details a comprehensive strategy for building a resilient web application setup utilizing Kubernetes, Docker, Nginx, Gunicorn, and Flask, specially designed for deploying machine learning applications. It provides a structured guideline for deploying a Gunicorn-served Flask-based machine learning application, including an Nginx reverse proxy for efficient HTTP and HTTPS request management. With a primary focus on deploying and rigorously testing a secure Flask web application within a Minikube cluster, the project underscores the importance of adhering to security best practices. This encompasses not only utilizing non-root user configurations in Dockerfiles, optimizing image sizes, and implementing essential SSL/TLS encryption but also includes measures to prevent the leakage of sensitive information, ensuring a robust and secure deployment environment.
     
     
 ![Architecture](https://lh6.googleusercontent.com/UQJjOnPSiafDTICrSyDzAA7civKZvIyVAwxJIFDAMaTqegYHGXzlaaFIVmUtS36vSQ5qqcMJrIWWUVydAgx0C6LfZKWEO0Lfn0T-c0Nb3S63BRhQ9T3r_Ti7N_5exNJ5pDN2CPIH4OHZ6W5AQaNyRn4)
@@ -12,66 +12,84 @@ This project exemplifies the setup of a web application stack using Docker, Ngin
 The project includes the following fundamental components:
 
 1. `Flask App`: An application built on Flask that specializes in predicting Iris flower classifications, serving as an example scenario for machine learning-based prediction. This web application is proficient in handling HTTP requests for this specific classification task.
-2. `Nginx`:Serving as a web server, Nginx functions as a reverse proxy, directing requests to the Flask application, while also taking charge of HTTPS connections through SSL/TLS certificates.
-3. `Gunicorn`: Utilized as a WSGI HTTP server, Gunicorn is responsible for running the Flask application.
-4. `Docker Compose`: Docker Compose is employed to efficiently govern and orchestrate the Docker containers in the setup.
+2. `Gunicorn`: Utilized as a WSGI HTTP server, Gunicorn is responsible for running the Flask application.
+3. `Nginx`:Serving as a web server, Nginx functions as a reverse proxy, directing requests to the Flask application, while also taking charge of HTTPS connections through SSL/TLS certificates.
+4. `Docker`: Docker Compose is employed to efficiently govern and orchestrate the Docker containers in the setup.
+5. `Minikube`: The Minikube setup ensures a micro-scale Kubernetes environment, ideal for local development and testing also ensuring compatibility and readiness for larger-scale deployments.
 
+## Salient Features
+1. Integrated custom error module and configured logging for immediate Slack notifications in case of errors.
+2. Utilizing Nginx as a reverse proxy to bolster security by concealing backend server information.
+3. Specification of SSL certificate and private key for secure communication, alongside HTTP to HTTPS redirection ensuring encrypted and secure traffic.
+4. Minimizing image size by selectively copying essential files, avoiding unnecessary Python bytecode generation, and executing the application with non-root user permissions.
+5. Implementing rate limiting and connection limiting zones to regulate client access rates, preventing misuse and ensuring equitable usage.
+6. Employing config mapping and secret utilization for secure and efficient management of application configurations and sensitive data.
 
 ## Project Directory Layout
 The project maintains the following directory structure:
 
 ```bash
-|-- docker-compose.yml
 |-- flask_app
+|   |-- .env
+|   |-- Dockerfile
+|   |-- main.py
+|   |-- requirements.txt
+|   |-- wsgi.py
+|   |-- __init__.py
 |   |-- models
 |   |   |-- SVM_20231027134419.pkl
 |   |-- utilities
 |   |   |-- app_logger.py
 |   |   |-- error_handler.py
 |   |   |-- iris_model.py
-|   |-- Dockerfile
-|   |-- main.py
-|   |-- requirements.txt
-|   |-- wsgi.py
+|   |   |-- __init__.py
+|-- k8s
+|   |-- iris-app.yaml
+|   |-- iris-service.yaml
+|   |-- nginx-config.conf
+|   |-- nginx-service.yaml
+|   |-- nginx.yaml
+|-- ml_develop
+|   |-- Iris Classification.ipynb
+|   |-- SVM_20231027134419.pkl
 |-- nginx
 |   |-- Dockerfile
 |   |-- nginx.conf
 |   |-- project.conf
-|-- run_docker.sh
+|
+|-- .gitignore
+|-- docker-compose.yaml
+|-- LICENSE
 |-- nginx-server.crt
 |-- nginx-server.key
+|-- README.md
+|-- run_on_docker.bat
+|-- run_on_minikube.bat
 ```
-## Configuration and Deployment
+
+## Running Deployments
+
 1. Generating SSL Certificates (Optional)
 If you desire HTTPS support, you have the option to generate self-signed SSL/TLS certificates using the following command:
 
 ```bash
-openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 365 -nodes
+openssl req -x509 -newkey rsa:4096 -keyout nginx-server.key -out nginx-server.crt -days 365 -nodes
 ```
-2. Building Docker Containers 
-To construct and launch Docker containers `docker-compose up --build -d` command from the project directory
+2. Running Docker Containers 
+To construct and launch Docker containers use `run_on_docker.bat` from the project directory
 
 ```bash
-docker-compose up --build -d
+run_on_docker.bat
 ```
 3.  Accessing the Application
 
-Once the deployment is successful, the Flask application will be available at `http://localhost:8000`. Nginx will forward the HTTP requests to the Flask application.
-
-For HTTPS access, you'll need to set up a DNS pointing to the server or add a record in your system file to map the domain used in the file to ./etc/hosts/nginx/project.conf for localhost.
+Once the deployment is successful, Nginx will forward the HTTP requests to the Flask application at `https://localhost/`. 
 
 4. Using Postman:
 
-Open Postman and create a POST request to https://localhost/predict or https://yourdomain.com/predict, depending on your setup.
-Ensure the request body is correctly formatted according to what your /predict endpoint expects (JSON, form data, etc.).
+Open Postman and create a POST request to https://localhost/predict, depending on your setup. Ensure the request body is correctly formatted according to what your /predict endpoint expects (JSON, form data, etc.)
 Send the request and examine the response.
 
-4. Ending the Project
-You can halt the Docker containers by using `docker-compose down` command.
-
-```bash
-docker-compose down
-```
 
 ## Personalization
 
@@ -82,7 +100,7 @@ To personalize this project, follow these guidelines:
 - `SSL/TLS Certificates`: Replace the current `nginx-server.crt` and `nginx-server.key` files with suitable certificates from a trusted certificate authority if you prefer to utilize SSL/TLS certificates.
 
 ## Conclusion
-The project serves as a basic demonstration for constructing a secure web application stack with Docker, Nginx, Gunicorn, and Flask. It can be tailored to suit your specific requirements and serves as a foundational template for creating advanced and secure web applications. It's crucial to adhere to security best practices when deploying applications into a production environment.
+The project serves as a basic demonstration for constructing a secure web application stack with Minikube, Docker, Nginx, Gunicorn, and Flask. It can be tailored to suit your specific requirements and serves as a foundational template for creating advanced and secure web applications. It's crucial to adhere to security best practices when deploying applications into a production environment.
 
 # Additional Information about the App
 
@@ -104,8 +122,3 @@ Upon processing this input, the application responds with a JSON object indicati
     "iris_type": "iris-versicolor" 
 }
 ```
-## Error Handling and Responses
-The app is equipped with robust error handling mechanisms. In the event of errors, appropriate responses are provided to users. These responses aim to convey the issue encountered, ensuring clarity and guidance for users interacting with the application.
-
-## Logging and Slack Integration
-Furthermore, the application implements logging functionalities. All logs, including errors and critical events, are relayed to a designated Slack channel. This integration ensures prompt awareness and monitoring of system operations, facilitating efficient error resolution and system maintenance.
