@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: iris-service
+  name: iris-svc
 spec:
   selector:
     app: iris

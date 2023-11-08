@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  flask_app:
+  iris-app:
     restart: always
     build: ./flask_app
     ports:
@@ -14,7 +14,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - flask_app
+      - iris-app
     volumes:
       - ./nginx-server.crt:/etc/nginx/ssl/nginx-server.crt
       - ./nginx-server.key:/etc/nginx/ssl/nginx-server.key
