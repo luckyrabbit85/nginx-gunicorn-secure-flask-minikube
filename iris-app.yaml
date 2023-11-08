@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: iris
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: iris
@@ -13,7 +13,7 @@ spec:
         app: iris
     spec:
       containers:
-      - name: iris
-        image: amanroland/iris-app:0.0.1.RELEASE
-        ports:
-        - containerPort: 8000
+        - name: iris
+          image: amanroland/iris-app:0.0.1.RELEASE
+          ports:
+            - containerPort: 8000
