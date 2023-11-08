@@ -13,7 +13,7 @@ The project includes the following fundamental components:
 
 1. `Flask App`: An application built on Flask that specializes in predicting Iris flower classifications, serving as an example scenario for machine learning-based prediction. This web application is proficient in handling HTTP requests for this specific classification task.
 2. `Gunicorn`: Utilized as a WSGI HTTP server, Gunicorn is responsible for running the Flask application.
-3. `Nginx`:Serving as a web server, Nginx functions as a reverse proxy, directing requests to the Flask application, while also taking charge of HTTPS connections through SSL/TLS certificates.
+3. `Nginx`: Serving as a web server, Nginx functions as a reverse proxy, directing requests to the Flask application, while also taking charge of HTTPS connections through SSL/TLS certificates.
 4. `Docker`: Docker Compose is employed to efficiently govern and orchestrate the Docker containers in the setup.
 5. `Minikube`: The Minikube setup ensures a micro-scale Kubernetes environment, ideal for local development and testing also ensuring compatibility and readiness for larger-scale deployments.
 
@@ -67,7 +67,7 @@ The project maintains the following directory structure:
 |-- run_on_minikube.bat
 ```
 
-## Running Deployments
+## Rolling out deployments
 
 1. Generating SSL Certificates (Optional)
 If you desire HTTPS support, you have the option to generate self-signed SSL/TLS certificates using the following command:
@@ -76,19 +76,29 @@ If you desire HTTPS support, you have the option to generate self-signed SSL/TLS
 openssl req -x509 -newkey rsa:4096 -keyout nginx-server.key -out nginx-server.crt -days 365 -nodes
 ```
 2. Running Docker Containers 
-To construct and launch Docker containers use `run_on_docker.bat` from the project directory
+To construct and launch Docker containers use `run_on_docker.bat` from the project directory.
 
 ```bash
 run_on_docker.bat
 ```
-3.  Accessing the Application
-
+3. Accessing the Application
 Once the deployment is successful, Nginx will forward the HTTP requests to the Flask application at `https://localhost/`. 
 
 4. Using Postman:
-
 Open Postman and create a POST request to https://localhost/predict, depending on your setup. Ensure the request body is correctly formatted according to what your /predict endpoint expects (JSON, form data, etc.)
 Send the request and examine the response.
+
+```json
+{
+    "iris_dimensions": [3.4, 5.6, 4.5, 1.3]
+}
+```
+5. Running on minikube
+Make sure you have docker and minikube installed and running, then you can use `run_on_minkube` from the project directory.
+
+```bash
+run_on_minikube.bat
+```
 
 
 ## Personalization
@@ -101,24 +111,3 @@ To personalize this project, follow these guidelines:
 
 ## Conclusion
 The project serves as a basic demonstration for constructing a secure web application stack with Minikube, Docker, Nginx, Gunicorn, and Flask. It can be tailored to suit your specific requirements and serves as a foundational template for creating advanced and secure web applications. It's crucial to adhere to security best practices when deploying applications into a production environment.
-
-# Additional Information about the App
-
-This repository hosts a machine learning-based prediction model designed for classifying iris types based on the famous Iris dataset. The application allows users to input iris dimensions in the form of a JSON object and retrieves a prediction of the iris type through a similar JSON response.
-
-## Prediction Model Details
-
-The prediction model in this application is constructed using the iris dataset. It categorizes iris types based on input data formatted as:
-
-```json
-{
-    "iris_dimensions": [3.4, 5.6, 4.5, 1.3]
-}
-```
-Upon processing this input, the application responds with a JSON object indicating the classified iris type:
-
-```json
-{
-    "iris_type": "iris-versicolor" 
-}
-```
