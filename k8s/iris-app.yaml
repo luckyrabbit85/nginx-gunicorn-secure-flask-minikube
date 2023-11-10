@@ -14,6 +14,15 @@ spec:
     spec:
       containers:
         - name: iris
-          image: amanroland/iris-app:0.0.1.RELEASE
+          image: amanroland/iris-app:v2
           ports:
             - containerPort: 8000
+          volumeMounts:
+            - name: slack-config
+              mountPath: /home/blackrabbit/flask_app/.env
+              subPath: .env
+              readOnly: true
+      volumes:
+        - name: slack-config
+          configMap:
+            name: slack-config-map
