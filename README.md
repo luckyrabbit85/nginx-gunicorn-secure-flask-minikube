@@ -30,7 +30,7 @@ The project maintains the following directory structure:
 
 ```bash
 |-- flask_app
-|   |-- .env
+|   |-- .env # SLACK_WEBHOOK_URL
 |   |-- Dockerfile
 |   |-- main.py
 |   |-- requirements.txt
@@ -60,8 +60,8 @@ The project maintains the following directory structure:
 |-- .gitignore
 |-- docker-compose.yaml
 |-- LICENSE
-|-- nginx-server.crt
-|-- nginx-server.key
+|-- nginx-server.crt # CERTIFICATE
+|-- nginx-server.key # PRIVATE KEY
 |-- README.md
 |-- run_on_docker.bat
 |-- run_on_minikube.bat
