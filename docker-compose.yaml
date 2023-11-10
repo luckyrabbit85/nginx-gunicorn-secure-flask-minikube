@@ -5,6 +5,8 @@ services:
     build: ./flask_app
     ports:
       - "8000"
+    env_file:
+      - .env
 
   nginx:
     container_name: nginx
