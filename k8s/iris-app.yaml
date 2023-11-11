@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: iris
-          image: amanroland/iris-app:v2
+          image: amanroland/iris-app:v0.0.1
           ports:
             - containerPort: 8000
           volumeMounts:
