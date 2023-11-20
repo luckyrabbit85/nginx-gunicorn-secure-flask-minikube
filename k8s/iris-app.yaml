@@ -30,4 +30,4 @@ spec:
       volumes:
         - name: slack-configuration-volume  # Name of the volume
           configMap:
-            name: slack-config-map  # Name of the ConfigMap used as the volume source
+            name: slack-configuration-map  # Name of the ConfigMap used as the volume source
