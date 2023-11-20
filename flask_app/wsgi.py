@@ -1,5 +1,4 @@
-from main import app
-
+from app import app
 
 # FOR DEVELOPMENT PURPOSE ONLY
 # Running app in Flask's built-in development server

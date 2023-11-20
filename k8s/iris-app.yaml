@@ -1,28 +1,33 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1  # API version for the Kubernetes resource
+kind: Deployment  # Specifies the type of resource, in this case, a Deployment
+
 metadata:
-  name: iris
+  name: iris-app  # Name of the Deployment resource
+
 spec:
-  replicas: 3
+  replicas: 3  # Number of desired replicas for the application
+
   selector:
     matchLabels:
-      app: iris
+      app: iris-app  # Labels used to match Pods controlled by this Deployment
+
   template:
     metadata:
       labels:
-        app: iris
+        app: iris-app  # Labels applied to Pods created by this template
     spec:
       containers:
-        - name: iris
-          image: amanroland/iris-app:v2
+        - name: iris-app  # Name of the container within the Pod
+          image: amanroland/iris-app:v0.0.1  # Docker image used for the container
           ports:
-            - containerPort: 8000
+            - containerPort: 8000  # Port to expose on the container
           volumeMounts:
-            - name: slack-config
-              mountPath: /home/blackrabbit/flask_app/.env
-              subPath: .env
-              readOnly: true
+            - name: slack-configuration-volume  # Name of the volume
+              mountPath: /home/blackrabbit/flask_app/.env  # Path in the container where the volume should be mounted
+              subPath: slack-webhook-configuration  # Subpath within the volume
+              readOnly: true  # Indicates if the volume is read-only
+
       volumes:
-        - name: slack-config
+        - name: slack-configuration-volume  # Name of the volume
           configMap:
-            name: slack-config-map
+            name: slack-config-map  # Name of the ConfigMap used as the volume source

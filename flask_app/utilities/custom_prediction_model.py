@@ -1,9 +1,8 @@
 import pickle
 import numpy as np
 from flask import jsonify, Request
-from typing import List, Dict
-from utilities.error_handler import CustomException
-from utilities.error_handler import (
+from utilities.custom_error_handler import (
+    CustomException,
     INVALID_DIMENSIONS,
     ERROR_MESSAGE,
     PREDICTION_FAILED,
@@ -28,12 +27,12 @@ class IrisModel:
         except Exception:
             raise CustomException(ERROR_MESSAGE)
 
-    def validate_iris_dimensions(self, json_data: Dict[str, List[float]]) -> np.ndarray:
+    def validate_iris_dimensions(self, json_data: dict) -> np.ndarray:
         """
         Validates iris data dimensions.
 
         Args:
-            json_data (Dict[str, List[float]]): The JSON data containing 'iris_dimensions'.
+            json_data (dict): The JSON data containing 'iris_dimensions'.
 
         Returns:
             np.ndarray: Numpy array of the validated iris dimensions.
@@ -41,13 +40,12 @@ class IrisModel:
             CustomException: If dimensions are invalid.
         """
         iris_dimensions = json_data.get("iris_dimensions")
-        if "iris_dimensions" not in json_data:
-            raise CustomException(INVALID_DIMENSIONS)
-        if not isinstance(iris_dimensions, list):
-            raise CustomException(INVALID_DIMENSIONS)
-        if len(iris_dimensions) != 4:
-            raise CustomException(INVALID_DIMENSIONS)
-        if not all(isinstance(x, (int, float)) for x in iris_dimensions):
+        if (
+            "iris_dimensions" not in json_data
+            or not isinstance(iris_dimensions, list)
+            or len(iris_dimensions) != 4
+            or not all(isinstance(x, (int, float)) for x in iris_dimensions)
+        ):
             raise CustomException(INVALID_DIMENSIONS)
 
         return np.array(iris_dimensions).reshape(1, -1)

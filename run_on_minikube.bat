@@ -6,8 +6,8 @@ REM Expose the external IP directly to any program running on the host operating
 start cmd /k "minikube tunnel"
 
 REM Create ConfigMap for Nginx and Slack configuration
-kubectl create configmap nginx-config-map --from-file=k8s/nginx-config.conf
-kubectl create configmap slack-config-map --from-file=.env
+kubectl create configmap nginx-config-map --from-file ssl-proxy-configuration=k8s/ssl-proxy.conf
+kubectl create configmap slack-config-map --from-file slack-webhook-configuration=.env
 
 REM Create TLS Secret for Nginx using provided certificates
 kubectl create secret tls tls-certs-secret --cert=nginx-server.crt --key=nginx-server.key
@@ -17,7 +17,7 @@ kubectl apply -f k8s/iris-app.yaml -f k8s/iris-service.yaml -f k8s/nginx.yaml -f
 
 REM Wait for resources to become available
 echo Waiting for Iris deployment...
-kubectl wait --for=condition=Available --timeout=90s deployment.apps/iris
+kubectl wait --for=condition=Available --timeout=90s deployment.apps/iris-app
 
 echo Waiting for Nginx deployment...
 kubectl wait --for=condition=Available --timeout=90s deployment.apps/nginx
