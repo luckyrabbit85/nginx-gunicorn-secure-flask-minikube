@@ -1,35 +1,39 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1  # API version for the Kubernetes resource
+kind: Deployment  # Specifies the type of resource, in this case, a Deployment
 metadata:
-  name: nginx
+  name: nginx  # Name of the Deployment resource
+
 spec:
-  replicas: 1
+  replicas: 1  # Number of desired replicas for the application
+
   selector:
     matchLabels:
-      app: nginx
+      app: nginx  # Labels used to match Pods controlled by this Deployment
+
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx  # Labels applied to Pods created by this template
     spec:
       containers:
-      - name: nginx
-        image: nginx:stable-bullseye
+      - name: nginx  # Name of the container within the Pod
+        image: nginx:stable-bullseye  # Docker image used for the container
         ports:
-        - containerPort: 80
-        - containerPort: 443
+        - containerPort: 80  # Port to expose on the container
+        - containerPort: 443  # Another port to expose on the container for HTTPS
         volumeMounts:
-        - name: nginx-config
-          mountPath: /etc/nginx/conf.d/default.conf
-          subPath: nginx-config.conf
-          readOnly: true
-        - name: tls-certs
-          mountPath: /etc/nginx/certificate
-          readOnly: true
+        - name: nginx-configuration-volume  # Name of the volume
+          mountPath: /etc/nginx/conf.d/default.conf  # Path in the container where the volume should be mounted
+          subPath: ssl-proxy-configuration  # Subpath within the volume
+          readOnly: true  # Indicates if the volume is read-only
+        - name: tls-certs-volume  # Name of another volume
+          mountPath: /etc/nginx/certificate  # Path in the container where the volume should be mounted
+          readOnly: true  # Indicates if the volume is read-only
+
       volumes:
-      - name: nginx-config
+      - name: nginx-configuration-volume  # Name of the volume
         configMap:
-          name: nginx-config-map
-      - name: tls-certs
+          name: nginx-config-map  # Name of the ConfigMap used as the volume source
+      - name: tls-certs-volume  # Name of another volume
         secret:
-          secretName: tls-certs-secret
+          secretName: tls-certs-secret  # Name of the Secret used as the volume source

@@ -36,4 +36,5 @@ USER $USER
 EXPOSE 8000
 
 # Define the command to start the application
-CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:8000", "wsgi:app"]
+CMD ["gunicorn", "--log-level", "debug", "-w", "1", "-b", "0.0.0.0:8000", "wsgi:app"]
+
