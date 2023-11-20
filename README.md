@@ -30,40 +30,38 @@ The project maintains the following directory structure:
 
 ```bash
 |-- flask_app
-|   |-- .env # SLACK_WEBHOOK_URL
 |   |-- Dockerfile
-|   |-- main.py
+|   |-- app.py
 |   |-- requirements.txt
 |   |-- wsgi.py
 |   |-- __init__.py
 |   |-- models
 |   |   |-- SVM_20231027134419.pkl
 |   |-- utilities
-|   |   |-- app_logger.py
-|   |   |-- error_handler.py
-|   |   |-- iris_model.py
+|   |   |-- custom_logger_setup.py
+|   |   |-- custom_error_handler.py
+|   |   |-- custom_prediction_model.py
 |   |   |-- __init__.py
 |-- k8s
 |   |-- iris-app.yaml
 |   |-- iris-service.yaml
-|   |-- nginx-config.conf
 |   |-- nginx-service.yaml
 |   |-- nginx.yaml
+|   |-- ssl-proxy.conf
 |-- ml_develop
 |   |-- Iris Classification.ipynb
 |   |-- SVM_20231027134419.pkl
 |-- nginx
 |   |-- Dockerfile
-|   |-- nginx.conf
-|   |-- project.conf
+|   |-- ssl-proxy.conf
 |
+|-- .env
 |-- .gitignore
 |-- docker-compose.yaml
 |-- LICENSE
-|-- nginx-server.crt # CERTIFICATE
-|-- nginx-server.key # PRIVATE KEY
+|-- nginx-server.crt
+|-- nginx-server.key
 |-- README.md
-|-- run_on_docker.bat
 |-- run_on_minikube.bat
 ```
 
