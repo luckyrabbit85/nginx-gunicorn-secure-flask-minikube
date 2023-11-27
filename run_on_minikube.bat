@@ -6,8 +6,8 @@ REM Expose the external IP directly to any program running on the host operating
 start cmd /k "minikube tunnel"
 
 REM Create ConfigMap for Nginx and Slack configuration
-kubectl create configmap nginx-config-map --from-file ssl-proxy-configuration=k8s/ssl-proxy.conf
-kubectl create configmap slack-config-map --from-file slack-webhook-configuration=.env
+kubectl create configmap nginx-configuration-map --from-file ssl-proxy-configuration=k8s/ssl-proxy.conf
+kubectl create configmap slack-configuration-map --from-file slack-webhook-configuration=.env
 
 REM Create TLS Secret for Nginx using provided certificates
 kubectl create secret tls tls-certs-secret --cert=nginx-server.crt --key=nginx-server.key

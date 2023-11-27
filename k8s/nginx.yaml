@@ -33,7 +33,7 @@ spec:
       volumes:
       - name: nginx-configuration-volume  # Name of the volume
         configMap:
-          name: nginx-config-map  # Name of the ConfigMap used as the volume source
+          name: nginx-configuration-map  # Name of the ConfigMap used as the volume source
       - name: tls-certs-volume  # Name of another volume
         secret:
           secretName: tls-certs-secret  # Name of the Secret used as the volume source
